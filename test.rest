@@ -1,6 +1,41 @@
 
+### GET Users
+GET http://localhost:5000/api/users
+
 ### GET User
-GET http://localhost:5000/api/user
+GET http://localhost:5000/api/users/64aef5ed21d609b8278fb8b8
+
+### POST User
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+    "firstName" : "subho", 
+    "lastName" : "shi", 
+    "email" : "subosi@gmail.com",
+    "username" : "subhos", 
+    "password" : "test1234", 
+    "phone" : 77, 
+    "address" : "Vavuniya"
+}
+
+### PUT User
+PUT http://localhost:5000/api/users/64aef5ed21d609b8278fb8b8
+Content-Type: application/json
+
+{
+    "firstName" : "subhoshini", 
+    "lastName" : "shi", 
+    "email" : "subosi@gmail.com",
+    "username" : "subhos", 
+    "password" : "test1234", 
+    "phone" : 77, 
+    "address" : "Vavuniya"
+}
+
+### DELETE User
+DELETE http://localhost:5000/api/users/64aef5ed21d609b8278fb8b8
+Content-Type: application/json
 
 ### login
 POST http://localhost:5000/api/auth/login
