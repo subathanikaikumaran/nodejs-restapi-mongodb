@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 /**
+@admin admin
 @desc Get all users
 @route GET /api/users
 @access private
@@ -11,8 +13,8 @@ const getUsers = asyncHandler(async (req, res) => {
   return res.status(200).json(users)
 })
 
-
 /**
+@admin admin
 @desc Get count
 @route GET /api/users/count
 @access private
@@ -24,21 +26,33 @@ const getCount = asyncHandler(async (req, res) => {
 })
 
 /**
+@admin admin
 @desc Create new user
 @route POST /api/users
 @access private
 */
 const createUser = asyncHandler(async (req, res) => {
-  const { firstName, lastName, email, username, password, phone, address } = req.body
-  if (!firstName || !lastName || !email || !username || !password || !phone || !address) {
+  const { email, username, password } = req.body
+  if (!email || !username || !password) {
     res.status(400)
     throw new Error('All fields are required!')
   }
-  const newUser = await User.create({ firstName, lastName, email, username, password, phone, address })
-  return res.status(201).json(newUser)
+  const isEmailExist = await User.findOne({ email })
+  if (isEmailExist) {
+    res.status(400)
+    throw new Error('User already registerd!')
+  }
+  // Hash pwd
+  const hashPwd = await bcrypt.hash(password, 10)
+
+  const newUser = await User.create({ email, username, password: hashPwd })
+  if (newUser) res.status(201).json({ _id: newUser.id, email: newUser.email })
+  res.status(400)
+  throw new Error('User data is not valid!')
 })
 
 /**
+@admin admin
 @desc Get user
 @route GET /api/users/:id
 @access private
@@ -54,6 +68,7 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 /**
+@admin admin
 @desc Update user
 @route PUT /api/users/:id
 @access private
@@ -74,6 +89,7 @@ const updateUser = asyncHandler(async (req, res) => {
 })
 
 /**
+@admin admin
 @desc Delete user
 @route DELETE /api/users/:id
 @access private
@@ -88,5 +104,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   await User.deleteOne({ _id: req.params.id })
   return res.status(200).json(user)
 })
-
 module.exports = { getUsers, getCount, createUser, updateUser, getUser, deleteUser }

@@ -1,0 +1,24 @@
+### login
+GET http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "subhashi@gmail.com",
+    "password": "test1234"
+}
+
+### POST register
+POST http://localhost:5000/api/auth/users/register
+Content-Type: application/json
+
+{   
+    "email" : "subhashi@gmail.com",
+    "username" : "subhashi", 
+    "password" : "test1234"
+}
+
+
+### GET current user
+GET http://localhost:5000/api/auth/users/current
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3ViaGFzaGkiLCJlbWFpbCI6InN1Ymhhc2hpQGdtYWlsLmNvbSIsImlkIjoiNjRhZmE1ODJlMGE3MTJkNmQ3Y2ZjZWYzIn0sImlhdCI6MTY4OTIzMjgyNiwiZXhwIjoxNjg5MjM0NjI2fQ.O0UsGrPJbVqZs0JW3j7rOnb8pXUUJpe73l27dSVde_Y

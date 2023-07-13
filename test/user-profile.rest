@@ -1,0 +1,39 @@
+
+### GET my profile
+GET http://localhost:5000/api/users/myProfile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3ViaGFzaGkiLCJlbWFpbCI6InN1Ymhhc2hpQGdtYWlsLmNvbSIsImlkIjoiNjRhZmE1ODJlMGE3MTJkNmQ3Y2ZjZWYzIn0sImlhdCI6MTY4OTIzMjgyNiwiZXhwIjoxNjg5MjM0NjI2fQ.O0UsGrPJbVqZs0JW3j7rOnb8pXUUJpe73l27dSVde_Y
+
+### POST create my profile
+POST http://localhost:5000/api/users/myProfile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3ViaGFzaGkiLCJlbWFpbCI6InN1Ymhhc2hpQGdtYWlsLmNvbSIsImlkIjoiNjRhZmE1ODJlMGE3MTJkNmQ3Y2ZjZWYzIn0sImlhdCI6MTY4OTIzMjgyNiwiZXhwIjoxNjg5MjM0NjI2fQ.O0UsGrPJbVqZs0JW3j7rOnb8pXUUJpe73l27dSVde_Y
+
+{
+    "firstName" : "subhoshini", 
+    "lastName" : "shi",     
+    "phone" : 77, 
+    "address" : "Vavuniya",
+    "weight": "89.36",
+    "height": "156"
+}
+
+
+### PUT update my profile
+PUT http://localhost:5000/api/users/myProfile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3ViaGFzaGkiLCJlbWFpbCI6InN1Ymhhc2hpQGdtYWlsLmNvbSIsImlkIjoiNjRhZmE1ODJlMGE3MTJkNmQ3Y2ZjZWYzIn0sImlhdCI6MTY4OTIzMjgyNiwiZXhwIjoxNjg5MjM0NjI2fQ.O0UsGrPJbVqZs0JW3j7rOnb8pXUUJpe73l27dSVde_Y
+
+{
+    "firstName" : "Subashini", 
+    "lastName" : "shi",     
+    "phone" : 77, 
+    "address" : "Vavuniya",
+    "weight": "89.36",
+    "height": "156"
+}
+
+### GET all user profiles
+GET http://localhost:5000/api/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3ViaGFzaGkiLCJlbWFpbCI6InN1Ymhhc2hpQGdtYWlsLmNvbSIsImlkIjoiNjRhZmE1ODJlMGE3MTJkNmQ3Y2ZjZWYzIn0sImlhdCI6MTY4OTIzNDkyMiwiZXhwIjoxNjg5MjM2NzIyfQ.9BLSbkN5-JpPYhjKs4-JU4dPoQKuw_F4608314eyLLI
