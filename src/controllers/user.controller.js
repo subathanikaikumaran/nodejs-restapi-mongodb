@@ -1,6 +1,19 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+
+/**
+@admin admin
+@desc Get all users
+@route GET /api/users
+@access private
+*/
+
+const getUserList = asyncHandler(async (req, res) => {
+  const users = await User.find().sort({ username: -1 })
+  return res.status(200).json(users)
+})
+
 /**
 @admin admin
 @desc Get all users
@@ -104,4 +117,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   await User.deleteOne({ _id: req.params.id })
   return res.status(200).json(user)
 })
-module.exports = { getUsers, getCount, createUser, updateUser, getUser, deleteUser }
+module.exports = { getUsers, getCount, createUser, updateUser, getUser, deleteUser, getUserList }

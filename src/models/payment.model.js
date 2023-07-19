@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const paymentSchema = new mongoose.Schema({
-  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  memberId: { type: Schema.Types.ObjectId, ref: 'User' },
   amount: { type: String, required: true },
   paymentDate: { type: Date, required: true, default: new Date() }
 }, { timestamps: true })

@@ -1,5 +1,9 @@
 
 ### GET Users
+GET http://localhost:5000/api/users/list
+
+
+### GET Users
 GET http://localhost:5000/api/users
 
 ### GET User
@@ -10,10 +14,10 @@ POST http://localhost:5000/api/users
 Content-Type: application/json
 
 {
-    "firstName" : "subho", 
-    "lastName" : "shi", 
-    "email" : "subosi@gmail.com",
-    "username" : "subhos", 
+    "firstName" : "Vijayalaxmy", 
+    "lastName" : "Kanakaratname", 
+    "email" : "vijaya@gmail.com",
+    "username" : "vijaya", 
     "password" : "test1234", 
     "phone" : 77, 
     "address" : "Vavuniya"

@@ -10,7 +10,9 @@ const userProfileSchema = new mongoose.Schema({
   weight: { type: String, required: false, default: '0' },
   height: { type: String, required: false, default: '0' },
   remark: { type: String, required: false, default: '' },
-  date: { type: Date, required: true, default: new Date() }
+  date: { type: Date, required: true, default: new Date() },
+  subscriptionExpiration: { type: Date, required: false },
+  subscriptionStatus: { type: Boolean, default: false }
 }, { timestamps: true })
 
-module.exports = mongoose.model('UserProfile', userProfileSchema)
+module.exports = mongoose.model('Members', userProfileSchema)
