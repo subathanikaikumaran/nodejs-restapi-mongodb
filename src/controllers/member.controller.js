@@ -1,160 +1,156 @@
 const asyncHandler = require('express-async-handler')
-const UserProfile = require('../models/userProfile')
-
-/**
-@admin user
-@desc Get user
-@route GET /api/users/profile
-@access private
-*/
-
-const getMyProfile = asyncHandler(async (req, res) => {
-  const user = await UserProfile.findById(req.user.id)
-  if (!user) {
-    res.status(404)
-    throw new Error('User profile not found')
-  }
-  return res.status(200).json(user)
-})
-
-/**
-@admin user
-@desc Create new user
-@route POST /api/users/profile
-@access private
-*/
-const createMyProfile = asyncHandler(async (req, res) => {
-  const { firstName, lastName, phone, address, weight, height } = req.body
-  if (!firstName || !lastName || !phone || !address) {
-    res.status(400)
-    throw new Error('All fields are required!')
-  }
-  const user = await UserProfile.findOne({ userId: req.user.id })
-  if (user) {
-    res.status(400)
-    throw new Error('You have already added your profile.')
-  }
-  const newUser = await UserProfile.create({ userId: req.user.id, firstName, lastName, phone, address, weight, height })
-  return res.status(201).json(newUser)
-})
-
-/**
-@admin user
-@desc Update user
-@route PUT /api/users/profile
-@access private
-*/
-
-const updateMyProfile = asyncHandler(async (req, res) => {
-  const user = await UserProfile.findOne({ userId: req.user.id })
-  if (!user) {
-    res.status(404)
-    throw new Error('User not found')
-  }
-  if (user.userId.toString() !== req.user.id) {
-    res.status(403)
-    throw new Error('User do not permission to update.')
-  }
-  const updatedUser = await UserProfile.findByIdAndUpdate(
-    user.id,
-    req.body,
-    { new: true }
-  )
-  return res.status(200).json(updatedUser)
-})
-
+const Member = require('../models/member.model')
+const User = require('../models/user.model')
+const { randomValue } = require('../utils/crypto')
+const commonProjection = require('../utils/projections')
 /**
 @admin admin
-@desc Get all users
-@route GET /api/users
+@desc Get all members
+@route GET /api/members
 @access private
 */
 
-const getUserProfiles = asyncHandler(async (req, res) => {
-  const users = await UserProfile.find()
-  return res.status(200).json(users)
+const getMembers = asyncHandler(async (req, res) => {
+  const pageId = parseInt(req.body.pageId) || 1
+  const pageSize = parseInt(req.body.pageSize) || 10
+
+  // Calculate the skip value based on the page number and page size
+  const skip = (pageId - 1) * pageSize
+
+  // Find all members with pagination
+  const members = await Member.find({}, commonProjection).skip(skip).limit(pageSize)
+
+  const memberCount = await Member.countDocuments()
+  const response = {
+    count: memberCount,
+    pageId,
+    pageSize,
+    arr: members
+  }
+  return res.status(200).json(response)
 })
 
 /**
 @admin admin
 @desc Get count
-@route GET /api/users/count
+@route GET /api/members/count
 @access private
 */
-
-const getCountProfile = asyncHandler(async (req, res) => {
-  const users = await UserProfile.count()
-  return res.status(200).json(users)
+const getMemberCount = asyncHandler(async (req, res) => {
+  const memberCount = await Member.countDocuments()
+  return res.status(200).json(memberCount)
 })
 
 /**
 @admin admin
-@desc Create new user
-@route POST /api/users
+@desc Create new member
+@route POST /api/members
 @access private
 */
-const createUserProfile = asyncHandler(async (req, res) => {
-  const { firstName, lastName, email, username, password, phone, address } = req.body
-  if (!firstName || !lastName || !email || !username || !password || !phone || !address) {
+
+// const createMember = async (req, res) => {
+//   try {
+//     const { firstName, lastName, phone, address, weight, height, remark, regDate, subscriptionExpiration, subscriptionStatus } = req.body
+//     if (!firstName || !lastName || !phone || !address) {
+//       return res.status(400).json({ error: 'All fields are required!' })
+//     }
+
+//     const isPhoneExist = await Member.findOne({ phone })
+//     if (isPhoneExist) {
+//       return res.status(400).json({ error: 'Phone number already registered!' })
+//     }
+
+//     const token = randomValue(5)
+//     console.log(token)
+
+//     const newmember = await Member.create({ firstName, lastName, phone, address, weight, height, remark, token, regDate, subscriptionExpiration, subscriptionStatus })
+//     return res.status(201).json(newmember)
+//   } catch (err) {
+//     console.error(err)
+//     return res.status(500).json({ error: 'Server Error' })
+//   }
+// }
+
+const createMember = asyncHandler(async (req, res) => {
+  const { firstName, lastName, phone, address, weight, height, remark, regDate, subscriptionExpiration, subscriptionStatus } = req.body
+  if (!firstName || !lastName || !phone || !address) {
     res.status(400)
     throw new Error('All fields are required!')
   }
-  const newUser = await UserProfile.create({ firstName, lastName, email, username, password, phone, address })
-  return res.status(201).json(newUser)
+  const isPhoneExist = await Member.findOne({ phone })
+  if (isPhoneExist) {
+    res.status(400)
+    throw new Error('Phone number already registerd!')
+  }
+  const token = randomValue(5)
+  console.log(token)
+  const newmember = await Member.create({ firstName, lastName, phone, address, weight, height, remark, token, regDate, subscriptionExpiration, subscriptionStatus })
+  return res.status(201).json(newmember)
 })
 
 /**
 @admin admin
-@desc Get user
-@route GET /api/users/:id
+@desc Get member
+@route GET /api/members/:id
 @access private
 */
 
-const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await UserProfile.findById(req.params.id)
-  if (!user) {
+const getMember = asyncHandler(async (req, res) => {
+  const member = await Member.findById(req.params.id, commonProjection)
+  if (!member) {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('member not found')
   }
-  return res.status(200).json(user)
+  return res.status(200).json(member)
 })
 
 /**
 @admin admin
-@desc Update user
-@route PUT /api/users/:id
+@desc Update member
+@route PUT /api/members/:id
 @access private
 */
 
-const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await UserProfile.findById(req.params.id)
-  if (!user) {
+const updateMember = asyncHandler(async (req, res) => {
+  const member = await Member.findById(req.params.id)
+  if (!member) {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('member not found')
   }
-  const updatedUser = await UserProfile.findByIdAndUpdate(
+  const phone = req.body.phone
+  if (phone && phone !== member.phone) {
+    const isPhoneExist = await Member.findOne({ phone })
+    if (isPhoneExist) {
+      res.status(400)
+      throw new Error('Phone number already registerd!')
+    }
+  }
+  const updatedmember = await Member.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
   )
-  return res.status(200).json(updatedUser)
+  return res.status(200).json(updatedmember)
 })
 
 /**
 @admin admin
-@desc Delete user
-@route DELETE /api/users/:id
+@desc Delete member
+@route DELETE /api/members/:id
 @access private
 */
 
-const deleteUserProfile = asyncHandler(async (req, res) => {
-  const user = await UserProfile.findById(req.params.id)
-  if (!user) {
+const deleteMember = asyncHandler(async (req, res) => {
+  const member = await Member.findById(req.params.id)
+  if (!member) {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('member not found')
   }
-  await UserProfile.deleteOne({ _id: req.params.id })
-  return res.status(200).json(user)
+  const { memberId } = member
+
+  await Member.deleteOne({ _id: req.params.id })
+  await User.deleteOne({ memberId })
+  return res.status(200).json(member)
 })
 
-module.exports = { getMyProfile, createMyProfile, updateMyProfile, getUserProfiles, getCountProfile, createUserProfile, updateUserProfile, getUserProfile, deleteUserProfile }
+module.exports = { getMembers, getMemberCount, createMember, getMember, updateMember, deleteMember }
