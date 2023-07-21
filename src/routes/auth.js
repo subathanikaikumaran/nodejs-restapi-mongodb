@@ -4,7 +4,7 @@ const { loginUser, registerUser, currentUser } = require('../controllers/auth.co
 const validateToken = require('../middlewares/validateTokenHandler')
 
 router.get('/login', loginUser)
-router.post('/users/register', registerUser)
+router.post('/signup', registerUser)
 router.get('/users/current', validateToken, currentUser)
 
 module.exports = router
