@@ -135,6 +135,40 @@ const updateMember = asyncHandler(async (req, res) => {
 
 /**
 @admin admin
+@desc Update member's user account status
+@route PUT /api/members/:id/status
+@access private
+*/
+
+const updateMemberUserStatus = asyncHandler(async (req, res) => {
+  const member = await Member.findById(req.params.id)
+  if (!member) {
+    res.status(404)
+    throw new Error('Member not found!')
+  }
+
+  const user = await User.findOne({ memberId: req.params.id })
+  if (!user) {
+    res.status(404)
+    throw new Error('User not found!')
+  }
+
+  const status = req.body.status
+  if (status && status !== user.isActive) {
+    const updatedmember = await Member.findByIdAndUpdate(
+      { memberId: req.params.id },
+      { $set: { isActive: status } },
+      { new: true }
+    )
+    return res.status(200).json(updatedmember)
+  }
+
+  res.status(400)
+  throw new Error('Not required changes!')
+})
+
+/**
+@admin admin
 @desc Delete member
 @route DELETE /api/members/:id
 @access private
@@ -153,4 +187,4 @@ const deleteMember = asyncHandler(async (req, res) => {
   return res.status(200).json(member)
 })
 
-module.exports = { getMembers, getMemberCount, createMember, getMember, updateMember, deleteMember }
+module.exports = { getMembers, getMemberCount, createMember, getMember, updateMember, deleteMember, updateMemberUserStatus }
