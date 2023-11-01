@@ -112,12 +112,13 @@ const getMember = asyncHandler(async (req, res) => {
 */
 
 const updateMember = asyncHandler(async (req, res) => {
-  const member = await Member.findById(req.params.id)
+  const memberId = req.params.id
+  const member = await Member.findById(memberId)
   if (!member) {
     res.status(404)
     throw new Error('member not found')
   }
-  const phone = req.body.phone
+  const { phone } = req.body
   if (phone && phone !== member.phone) {
     const isPhoneExist = await Member.findOne({ phone })
     if (isPhoneExist) {
@@ -126,7 +127,7 @@ const updateMember = asyncHandler(async (req, res) => {
     }
   }
   const updatedmember = await Member.findByIdAndUpdate(
-    req.params.id,
+    memberId,
     req.body,
     { new: true }
   )

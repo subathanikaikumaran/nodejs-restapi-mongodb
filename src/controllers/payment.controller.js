@@ -12,4 +12,7 @@ const doPayment = (req, res) => {
 const updatePayment = (req, res) => {
   return res.status(200).json('Update Payment API')
 }
-module.exports = { getPayment, doPayment, updatePayment }
+const updatePaymentStatus = (req, res) => {
+  return res.status(200).json('Update Payment API')
+}
+module.exports = { getPayment, doPayment, updatePayment, updatePaymentStatus }
